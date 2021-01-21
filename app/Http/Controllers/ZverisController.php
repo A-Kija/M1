@@ -19,6 +19,24 @@ class ZverisController extends Controller
             'valio' => 'URA!'
         ]);
     }
+
+
+    public function p1()
+    {
+        return view('puslapis.p1', [
+            
+        ]);
+    }
+
+    public function p2()
+    {
+        return view('puslapis.p2', [
+            
+        ]);
+    }
+
+
+
 }
 
 // http://localhost/miskas/public/skaiciuoti/suma/45/87
