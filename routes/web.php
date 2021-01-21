@@ -33,4 +33,4 @@ Route::get('puslapis2', [ZverisController::class, 'p2'])->name('ona');
 
 
 Route::get('calc', [CalcController::class, 'show'])->name('show');
-Route::post('calc', [CalcController::class, 'do'])->name('do');
+Route::post('calc', [CalcController::class, 'do']);
