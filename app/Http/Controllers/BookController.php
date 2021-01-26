@@ -13,10 +13,34 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $r)
     {
-        $books = Book::all();
-       return view('book.index', ['books' => $books]);
+        
+        //FILTRAVIMAS
+        // if (null !== $r->author_id) {
+        //     $books = Book::where('author_id', $r->author_id)->get();
+        // }
+        // else {
+        //     $books = Book::all();
+        // }
+
+        //FILTRAVIMAS
+        if (null !== $r->q) {
+            $books = Book::where('title', 'like', '%'.$r->q.'%')->get();
+        }
+        else {
+            $books = Book::all();
+        }
+
+
+
+        $authors = Author::orderBy('surname')->get(); // <------ duomenys apie autorius is db
+       return view('book.index', [
+           'books' => $books,
+           'authors' => $authors,
+           'filter_id' => $r->author_id ?? 0,
+           'q' => $r->q ?? ''
+           ]);
     }
 
     /**

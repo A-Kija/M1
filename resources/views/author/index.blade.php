@@ -1,3 +1,8 @@
+
+<a href="{{route('author.index', ['sort'=>'name'])}}">Pagal Vardą</a>
+<a href="{{route('author.index', ['sort'=>'surname'])}}">Pagal Pavardę</a>
+<a href="{{route('author.index')}}">X</a>
+<hr>
 @foreach ($authors as $author)
   {{$author->name}} {{$author->surname}} 
   <a href="{{route('author.edit', [$author])}}">EDIT</a>
