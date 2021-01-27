@@ -1,0 +1,12 @@
+.card-header {
+    &.red-header {
+        color: red;
+        font-weight: bold;
+    }
+}
+
+.list-group-item.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

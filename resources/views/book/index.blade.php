@@ -10,7 +10,7 @@
     </select>
     <button type="submit">FILTRUOTI</button>
     <a href="{{route('book.index')}}"><b>X</b></a>
-</form>
+ </form>
 <hr>
 <form action="{{route('book.index')}}" method="GET">
     <input type="text" name="q" value="{{$q}}">

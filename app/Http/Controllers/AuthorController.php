@@ -8,11 +8,13 @@ use Validator;
 
 class AuthorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index(Request $r)
     {
         // $authors = Author::all(); // <--- is db paimame viska, bilekaip
@@ -83,7 +85,7 @@ class AuthorController extends Controller
         $author->name = $request->author_name;
         $author->surname = $request->author_surname;
         $author->save();
-        return redirect()->route('author.index');
+        return redirect()->route('author.index')->with('success_message', 'Naujas autorius '.$author->name.' '.$author->surname.' buvo labai sėkmingai įrašytas.');
     }
 
     /**
@@ -144,7 +146,7 @@ class AuthorController extends Controller
         $author->name = $request->author_name;
         $author->surname = $request->author_surname;
         $author->save();
-        return redirect()->route('author.index');
+        return redirect()->route('author.index')->with('success_message', 'Autorius '.$author->name.' '.$author->surname.' buvo labai sėkmingai paredaguotas.');
     }
 
     /**
@@ -156,9 +158,9 @@ class AuthorController extends Controller
     public function destroy(Author $author)
     {
         if ($author->authorBooks->count() > 0) {
-            return 'Autoriaus trinti negalima, nes jis turi knygų';
+            return redirect()->back()->with('info_message', 'Autoriaus '.$author->name.' '.$author->surname.' trinti negalima, nes jis turi knygų.');
         }
         $author->delete();
-        return redirect()->route('author.index');
+        return redirect()->route('author.index')->with('success_message', 'Autorius '.$author->name.' '.$author->surname.' buvo labai sėkmingai pašalintas iš bibliotekos.');
     }
 }

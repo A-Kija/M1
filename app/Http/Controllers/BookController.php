@@ -16,7 +16,7 @@ class BookController extends Controller
     public function index(Request $r)
     {
         
-        //FILTRAVIMAS
+        // // FILTRAVIMAS
         // if (null !== $r->author_id) {
         //     $books = Book::where('author_id', $r->author_id)->get();
         // }
@@ -24,8 +24,20 @@ class BookController extends Controller
         //     $books = Book::all();
         // }
 
-        //FILTRAVIMAS
-        if (null !== $r->q) {
+        // //IESKOJIMAS
+        // if (null !== $r->q) {
+        //     $books = Book::where('title', 'like', '%'.$r->q.'%')->get();
+        // }
+        // else {
+        //     $books = Book::all();
+        // }
+
+
+        //BENDRAS
+        if (null !== $r->author_id && null === $r->q) {
+            $books = Book::where('author_id', $r->author_id)->get();
+        }
+        elseif (null === $r->author_id && null !== $r->q) {
             $books = Book::where('title', 'like', '%'.$r->q.'%')->get();
         }
         else {
