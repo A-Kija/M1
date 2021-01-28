@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Validator;
+use View;
 
 class AuthorController extends Controller
 {
@@ -12,6 +13,31 @@ class AuthorController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function sort($type)
+    {
+
+        if ('name' == $type) {
+            $authors = Author::orderBy('name')->get();
+        }
+        elseif ('surname' == $type) {
+            $authors = Author::orderBy('surname')->get();
+        }
+        else {
+            $authors = Author::all();
+        }
+
+
+
+        $html = View::make('author.authors_list')->with(['authors' => $authors])->render();
+
+        return response()->json([
+            'type' => $type,
+            'list' => $html
+
+        ]);
+
     }
 
 

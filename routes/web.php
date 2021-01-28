@@ -59,6 +59,9 @@ Route::group(['prefix' => 'books'], function(){
     Route::post('delete/{book}', [BookController::class, 'destroy'])->name('book.destroy');
     Route::get('show/{book}', [BookController::class, 'show'])->name('book.show');
  });
+
+
+
  
  
 

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthorController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+ // JS
+ Route::middleware('auth:api')->post('sort/{type?}', [AuthorController::class, 'sort'])->name('book.sort');

@@ -23,6 +23,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+    <script>const sortUrl = "{{route('book.sort')}}/";</script>
+
+
 </head>
 <body>
     <div id="app">
