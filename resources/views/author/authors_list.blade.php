@@ -2,6 +2,10 @@
 <li class="list-group-item flex">
 <div>
 {{$author->name}} {{$author->surname}}
+
+@if($author->photo) 
+<img style="height: 100px;" src="{{asset('portrets').'/'.$author->photo}}" alt="{{$author->name}}">
+@endif
 </div>
 
 <div>
@@ -10,6 +14,7 @@
 @csrf
 <button type="submit" class="btn btn-danger">DELETE</button>
 </form>
+<a href="{{route('author.pdf', [$author])}}" class="btn btn-info">GET PDF</a>
 </div>
 </li>
 @endforeach

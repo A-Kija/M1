@@ -6,6 +6,7 @@ use App\Models\Author;
 use Illuminate\Http\Request;
 use Validator;
 use View;
+use PDF;
 
 class AuthorController extends Controller
 {
@@ -88,6 +89,7 @@ class AuthorController extends Controller
         [
             'author_name' => ['required', 'min:3', 'max:64'],
             'author_surname' => ['required', 'min:3', 'max:64'],
+            'author_portret' => ['mimes:jpeg,png','max:1014'],
         ],
         [
             'author_surname.required' => 'idek pavarde!',
@@ -103,11 +105,20 @@ class AuthorController extends Controller
             return redirect()->back()->withErrors($validator);
             
         }
- 
-        
-        
-        
         $author = new Author;
+
+        if ($request->has('author_portret')) {// tikrina ar yra nuotrauka
+            $image = $request->file('author_portret');// pasiima nuotraukos faila
+
+            // daro varda is autoriaus vardo + random laikas + nuotraukos ispletimas
+            $imageName = $request->author_name.'-'.time().'.'.$image->getClientOriginalExtension();
+
+            $path = public_path() . '/' . 'portrets' . '/';// nustatome kur deti nuotrauka
+            $image->move($path, $imageName);// dedam i folderi padarytu vardu
+
+            $author->photo = $imageName;// padaryta varda irasome i DB
+        }
+    
         $author->name = $request->author_name;
         $author->surname = $request->author_surname;
         $author->save();
@@ -152,6 +163,7 @@ class AuthorController extends Controller
             [
                 'author_name' => ['required', 'min:3', 'max:64'],
                 'author_surname' => ['required', 'min:3', 'max:64'],
+                'author_portret' => ['mimes:jpeg,png',' '],
             ],
             [
                 'author_surname.required' => 'idek pavarde!',
@@ -166,6 +178,20 @@ class AuthorController extends Controller
                 $request->flash();
                 return redirect()->back()->withErrors($validator);
                 
+            }
+
+            if ($request->has('author_portret')) {
+
+                // Jeigu autorius turejo nuotrauka ja  istriname
+                if ($author->photo) {
+                    unlink(public_path() . '/' . 'portrets' . '/'.$author->photo);
+                }
+
+                $image = $request->file('author_portret');
+                $imageName = $request->author_name.'-'.time().'.'.$image->getClientOriginalExtension();
+                $path = public_path() . '/' . 'portrets' . '/';
+                $image->move($path, $imageName); // move yra Laravel metodas
+                $author->photo = $imageName;
             }
         
         
@@ -186,7 +212,20 @@ class AuthorController extends Controller
         if ($author->authorBooks->count() > 0) {
             return redirect()->back()->with('info_message', 'Autoriaus '.$author->name.' '.$author->surname.' trinti negalima, nes jis turi knygų.');
         }
+
+        // Jeigu autorius turejo nuotrauka ja  istriname
+        if ($author->photo) {
+            unlink(public_path() . '/' . 'portrets' . '/'.$author->photo); // unlink PHP funkcija
+        }
+
         $author->delete();
         return redirect()->route('author.index')->with('success_message', 'Autorius '.$author->name.' '.$author->surname.' buvo labai sėkmingai pašalintas iš bibliotekos.');
+    }
+
+
+    public function pdf(Author $author)
+    {
+        $pdf = PDF::loadView('pdf', ['author' => $author]); //<------- bleidas pdf generavimui
+        return $pdf->download($author->name.'.pdf'); //<------ failo pavadinimas
     }
 }

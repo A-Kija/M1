@@ -47,6 +47,8 @@ Route::group(['prefix' => 'authors'], function(){
     Route::post('update/{author}', [AuthorController::class, 'update'])->name('author.update');
     Route::post('delete/{author}', [AuthorController::class, 'destroy'])->name('author.destroy');
     Route::get('show/{author}', [AuthorController::class, 'show'])->name('author.show');
+
+    Route::get('pdf/{author}', [AuthorController::class, 'pdf'])->name('author.pdf');
 });
 
 
