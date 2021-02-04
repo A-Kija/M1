@@ -49,6 +49,7 @@ Route::group(['prefix' => 'authors'], function(){
     Route::get('show/{author}', [AuthorController::class, 'show'])->name('author.show');
 
     Route::get('pdf/{author}', [AuthorController::class, 'pdf'])->name('author.pdf');
+    Route::get('mail/{author}', [AuthorController::class, 'mail'])->name('author.mail');
 });
 
 

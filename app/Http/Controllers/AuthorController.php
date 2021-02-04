@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Validator;
 use View;
 use PDF;
+use App\Mail\Mailtrap;
+use Mail;
 
 class AuthorController extends Controller
 {
@@ -228,4 +230,15 @@ class AuthorController extends Controller
         $pdf = PDF::loadView('pdf', ['author' => $author]); //<------- bleidas pdf generavimui
         return $pdf->download($author->name.'.pdf'); //<------ failo pavadinimas
     }
+
+
+    public function mail(Author $author) 
+    {
+        
+        Mail::to('arvydas.kijakauskas@gmail.com')->send(new Mailtrap($author)); 
+
+        return 'A message has been sent to Mailtrap!';
+    }
+
+
 }

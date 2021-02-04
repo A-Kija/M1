@@ -15,6 +15,8 @@
 <button type="submit" class="btn btn-danger">DELETE</button>
 </form>
 <a href="{{route('author.pdf', [$author])}}" class="btn btn-info">GET PDF</a>
+
+<a href="{{route('author.mail', [$author])}}" class="btn btn-info">SENT MAIL</a>
 </div>
 </li>
 @endforeach
